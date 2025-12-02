@@ -21,8 +21,9 @@ public class DRMManager : MonoBehaviour
         }
     }
 
-    private void showBuyGamePanel()
+    public void showBuyGamePanel()
     {
+        Debug.Log("the top one ShowBuyGamePanel ran");
         unauthorizePanel.SetActive(false);
         buyGamePanel.SetActive(true);
         saveModifiedPanel.SetActive(false);
@@ -44,9 +45,11 @@ public class DRMManager : MonoBehaviour
 
     public static void ShowBuyGamePanel()
     {
+        Debug.Log("ShowBuyGamePanel ran");
         if (instance != null)
         {
             instance.showBuyGamePanel();
+            Debug.Log("ShowBuyGamePanel ran");
         }
     }
 

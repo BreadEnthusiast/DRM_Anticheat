@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "UserScriptableData", menuName = "ScriptableObjects/UserScriptableData")]
 public class UserScriptableData : ScriptableObject
@@ -11,7 +12,9 @@ public class UserScriptableData : ScriptableObject
     public string GetUserName() => userName;
     public string GetUserPassword() => passwordName;
     public Sprite GetUserIcon() => userIcon;
-   
+
+    public Dictionary<string, int> OwnedGames = new Dictionary<string, int>();
+
     public bool AreCredentialValid(string _userName, string _passwordName) => _userName.Equals(userName) && _passwordName.Equals(passwordName);
 
 }
