@@ -7,8 +7,8 @@ public class Skirym_DRM : MonoBehaviour
         DRMManager.ShowBuyGamePanel();
     }
 
-    public void GenerateGameKey()
+    public void BuyGame()
     {
-        //UserManager.GetCurrentUser.
+
     }
 }
