@@ -2,13 +2,15 @@ using UnityEngine;
 
 public class Skirym_DRM : MonoBehaviour
 {
+
     public void Showbuypanel()
     {
         DRMManager.ShowBuyGamePanel();
     }
 
-    public void BuyGame()
+    public void CheckOwnership()
     {
 
     }
+
 }
