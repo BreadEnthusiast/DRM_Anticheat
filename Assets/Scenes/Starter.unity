@@ -660,7 +660,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buyGamePanel: {fileID: 1752821323}
-  StorePanel: {fileID: 1541447538}
+  storePanel: {fileID: 0}
+  skirymBuyButton: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -2934,7 +2935,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1541447539
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3007,7 +3008,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buyGamePanel: {fileID: 1752821323}
-  StorePanel: {fileID: 1541447538}
+  storePanel: {fileID: 0}
+  skirymBuyButton: {fileID: 0}
 --- !u!1 &1631782221
 GameObject:
   m_ObjectHideFlags: 0
