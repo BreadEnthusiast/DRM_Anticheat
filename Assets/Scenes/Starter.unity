@@ -459,7 +459,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 54.75
+  m_fontSize: 64.35
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -660,8 +660,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buyGamePanel: {fileID: 1752821323}
-  storePanel: {fileID: 0}
-  skirymBuyButton: {fileID: 0}
+  storePanel: {fileID: 1541447538}
+  skirymBuyButton: {fileID: 1631782221}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1144,7 +1144,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 69.35
+  m_fontSize: 72
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1574,7 +1574,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 959922426}
         m_TargetAssemblyTypeName: Skirym_DRM, Assembly-CSharp
-        m_MethodName: Showbuypanel
+        m_MethodName: CheckOwnership
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1634,6 +1634,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 529d7e058a5a26949b2fa07e1ec53d24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skirymGameRoot: {fileID: 2025075826}
 --- !u!1 &1097451071
 GameObject:
   m_ObjectHideFlags: 0
@@ -1783,7 +1784,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 54.75
+  m_fontSize: 64.35
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2607,6 +2608,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 529d7e058a5a26949b2fa07e1ec53d24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skirymGameRoot: {fileID: 2025075826}
 --- !u!114 &1463143104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2729,7 +2731,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 54.75
+  m_fontSize: 64.35
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2865,7 +2867,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 69.35
+  m_fontSize: 72
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3008,8 +3010,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buyGamePanel: {fileID: 1752821323}
-  storePanel: {fileID: 0}
-  skirymBuyButton: {fileID: 0}
+  storePanel: {fileID: 1541447538}
+  skirymBuyButton: {fileID: 1631782221}
 --- !u!1 &1631782221
 GameObject:
   m_ObjectHideFlags: 0
@@ -3093,13 +3095,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11500000, guid: 529d7e058a5a26949b2fa07e1ec53d24, type: 3}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 1541447542}
+        m_TargetAssemblyTypeName: Shop, Assembly-CSharp
+        m_MethodName: BuySkirym
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

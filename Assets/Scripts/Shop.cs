@@ -10,6 +10,7 @@ public class Shop : MonoBehaviour
     {
         storePanel.SetActive(true);
         buyGamePanel.SetActive(false);
+        RefreshUI();
     }
 
     public void CloseStore()
@@ -19,6 +20,26 @@ public class Shop : MonoBehaviour
 
     public void BuySkirym()
     {
+        UserScriptableData currentUser = UserManager.GetCurrentUser();
+        if (currentUser == null)
+        {
+            DRMManager.ShowUnauthorizePanel();
+            return;
+        }
 
+        int generatedKey = Random.Range(100000, 1000000); // 6-digit key
+        currentUser.AddOrReplaceGameKey(UserScriptableData.GameIdSkirym, generatedKey);
+
+        RefreshUI();
+        CloseStore();
+    }
+
+    private void RefreshUI()
+    {
+        if (skirymBuyButton == null) return;
+
+        UserScriptableData currentUser = UserManager.GetCurrentUser();
+        bool hasKey = currentUser != null && currentUser.HasGameKey(UserScriptableData.GameIdSkirym);
+        skirymBuyButton.SetActive(hasKey == false);
     }
 }

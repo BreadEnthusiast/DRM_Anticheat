@@ -17,8 +17,22 @@ public class UserManager : MonoBehaviour
     {
         allUsers = Resources.LoadAll("Users", typeof(UserScriptableData)).Cast<UserScriptableData>().ToArray();
 
+        if (allUsers.Length == 0)
+        {
+            Debug.LogWarning($"{nameof(UserManager)}: No users found in Resources/Users. " +
+                             $"If you intend to use Resources.LoadAll, place user assets under Assets/Resources/Users/. " +
+                             $"(Inspector-assigned default user will still be logged in.)");
+        }
+
         if (userToLogInOnStart == null) return;
-        TryToLogInUser(userToLogInOnStart.GetUserName(), userToLogInOnStart.GetUserPassword());
+        LogInUser(userToLogInOnStart);
+    }
+
+    public static void LogInUser(UserScriptableData user)
+    {
+        if (user == null) return;
+        currentUser = user;
+        OnLogIn?.Invoke(user);
     }
 
     public static bool TryToLogInUser(string _userName, string _passwordName)
@@ -30,12 +44,7 @@ public class UserManager : MonoBehaviour
                 continue;
             }
 
-            if (currentUser == null)
-            {
-                currentUser = allUsers[i];
-            }
-
-            OnLogIn?.Invoke(allUsers[i]);
+            LogInUser(allUsers[i]);
             return true;
         }
 
