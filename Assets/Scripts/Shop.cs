@@ -29,6 +29,7 @@ public class Shop : MonoBehaviour
 
         int generatedKey = Random.Range(100000, 1000000); // 6-digit key
         currentUser.AddOrReplaceGameKey(UserScriptableData.GameIdSkirym, generatedKey);
+        DRMKeyDatabase.RegisterKey(UserScriptableData.GameIdSkirym, generatedKey);
 
         RefreshUI();
         CloseStore();

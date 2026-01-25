@@ -16,7 +16,6 @@ public class UserScriptableData : ScriptableObject
     public string GetUserPassword() => passwordName;
     public Sprite GetUserIcon() => userIcon;
 
-    // Runtime-only ownership (Dictionary isn't Unity-serializable; that's fine for this simulation).
     public Dictionary<string, int> OwnedGames = new Dictionary<string, int>();
 
     private void OnEnable()

@@ -7,8 +7,15 @@ public class Skirym_DRM : MonoBehaviour
     [SerializeField] private GameObject skirymGameRoot;
 
     private const string ClickerUiRootName = "SkirymClickerUI";
-    private int gold = 0;
+    [SerializeField] private int gold = 0;
     private TMP_Text goldText = null;
+    private Button gainGoldButton = null;
+
+    // Very simple anticheat: keep a checksum of the gold value.
+    // If someone tampers with `gold` directly (memory editor/cheat engine), checksum won't match.
+    private uint goldChecksum = 0;
+    private uint sessionKey = 0;
+    private bool cheatDetected = false;
 
     public void Showbuypanel()
     {
@@ -30,6 +37,14 @@ public class Skirym_DRM : MonoBehaviour
             return;
         }
 
+        int userKey = currentUser.GetGameKey(UserScriptableData.GameIdSkirym);
+        if (DRMKeyDatabase.IsKeyValid(UserScriptableData.GameIdSkirym, userKey) == false)
+        {
+            // User claims ownership, but platform "database" doesn't recognize the key.
+            DRMManager.ShowBuyGamePanel();
+            return;
+        }
+
         if (skirymGameRoot == null)
         {
             Debug.LogWarning($"{nameof(Skirym_DRM)}: Missing reference to skirymGameRoot; cannot launch Skirym.");
@@ -38,6 +53,18 @@ public class Skirym_DRM : MonoBehaviour
 
         skirymGameRoot.SetActive(true);
         EnsureClickerUI();
+    }
+
+    private void Update()
+    {
+        // Continuously verify while the Skirym UI is active.
+        if (cheatDetected || skirymGameRoot == null || skirymGameRoot.activeInHierarchy == false) return;
+        if (goldText == null) return; // clicker not initialized
+
+        if (IsGoldValid() == false)
+        {
+            OnCheatDetected();
+        }
     }
 
     private void EnsureClickerUI()
@@ -49,9 +76,22 @@ public class Skirym_DRM : MonoBehaviour
         {
             CreateClickerUI();
         }
+        else
+        {
+            // Rebind references if the UI already exists (e.g., relaunching Skirym).
+            Transform goldTf = existing.Find("GoldText");
+            if (goldTf != null) goldText = goldTf.GetComponent<TMP_Text>();
+            Transform btnTf = existing.Find("GainGoldButton");
+            if (btnTf != null) gainGoldButton = btnTf.GetComponent<Button>();
+        }
 
-        gold = 0;
-        UpdateGoldText();
+        // Reset state each time Skirym is launched.
+        cheatDetected = false;
+        sessionKey = (uint)Random.Range(int.MinValue, int.MaxValue) ^ (uint)System.Environment.TickCount;
+        if (sessionKey == 0) sessionKey = 0xA5A5A5A5;
+
+        SetGold(0);
+        if (gainGoldButton != null) gainGoldButton.interactable = true;
     }
 
     private void CreateClickerUI()
@@ -99,6 +139,7 @@ public class Skirym_DRM : MonoBehaviour
 
         Button btn = buttonGo.AddComponent<Button>();
         btn.onClick.AddListener(AddGold);
+        gainGoldButton = btn;
 
         // Button label
         GameObject labelGo = new GameObject("Label", typeof(RectTransform));
@@ -120,8 +161,59 @@ public class Skirym_DRM : MonoBehaviour
 
     private void AddGold()
     {
-        gold++;
+        if (cheatDetected) return;
+
+        if (IsGoldValid() == false)
+        {
+            OnCheatDetected();
+            return;
+        }
+
+        SetGold(gold + 1);
+    }
+
+    private void SetGold(int value)
+    {
+        gold = value;
+        goldChecksum = ComputeChecksum(gold);
         UpdateGoldText();
+    }
+
+    private bool IsGoldValid()
+    {
+        // If not initialized yet, consider it invalid (forces safe paths).
+        if (sessionKey == 0) return false;
+        return goldChecksum == ComputeChecksum(gold);
+    }
+
+    private uint ComputeChecksum(int value)
+    {
+        unchecked
+        {
+            // Lightweight mixing (not crypto; just a demo checksum).
+            uint x = (uint)value;
+            x ^= sessionKey;
+            x *= 0x9E3779B1u;
+            x ^= (x >> 16);
+            x *= 0x85EBCA6Bu;
+            x ^= (x >> 13);
+            return x;
+        }
+    }
+
+    private void OnCheatDetected()
+    {
+        cheatDetected = true;
+
+        if (gainGoldButton != null) gainGoldButton.interactable = false;
+        if (goldText != null)
+        {
+            goldText.text = "CHEAT DETECTED";
+            goldText.color = new Color(1f, 0.25f, 0.25f, 1f);
+        }
+
+        // Reuse existing UX for “data modified”.
+        DRMManager.ShowSaveModifiedPanel();
     }
 
     private void UpdateGoldText()
@@ -134,7 +226,10 @@ public class Skirym_DRM : MonoBehaviour
 
         if (goldText != null)
         {
-            goldText.text = $"Gold: {gold}";
+            if (cheatDetected == false)
+            {
+                goldText.text = $"Gold: {gold}";
+            }
         }
     }
 }
